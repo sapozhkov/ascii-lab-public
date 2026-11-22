@@ -16,12 +16,24 @@
         <span class="number">02</span>
         <h1>Jellyfish heart</h1>
         <p>Two ASCII jellyfish spiral upward together. Seen from the side, their bells and tentacles form a heart.</p>
-        <a class="scene-card" href="model.html" aria-label="Explore the interactive jellyfish model">
-          <span class="scene-card-header"><span>Interactive model</span><strong>Explore the model</strong></span>
-          <img src="model-preview.webp" width="860" height="360" alt="The jellyfish in the final camera view beside their orbit from above">
-          <span class="model-caption">Scrub the reel and compare the swimming geometry with the pose you see on screen.</span>
-        </a>
+        <div class="scene-cards">
+          <a class="scene-card" href="https://github.com/sapozhkov/ascii-lab-public/blob/main/02-jellyfish-heart/source/duet.py" aria-label="View the jellyfish simulation source on GitHub">
+            <span class="scene-card-header"><span class="filename">duet.py</span><strong>View source on GitHub</strong></span>
+            <pre><code>radial += ((target-radius)*9 - radial*5)*DT
+radius += radial*DT
+omega += ((.54-.16*open_)*pump - .62*omega)*DT
+climb += (.20*pump - .65*climb - .6*climb*abs(climb))*DT</code></pre>
+          </a>
+          <a class="scene-card scene-card--model" href="model.html" aria-label="Explore the interactive jellyfish model">
+            <span class="scene-card-header"><span>Interactive model</span><strong>Explore the model</strong></span>
+            <span class="model-preview">
+              <img src="model-preview.webp" width="860" height="360" style="object-position:center" alt="The jellyfish in the final camera view beside their orbit from above">
+            </span>
+            <span class="model-caption">Scrub the reel and compare the swimming geometry with the final pose.</span>
+          </a>
+        </div>
         <nav class="actions" aria-label="Scene links">
+          <a href="https://github.com/sapozhkov/ascii-lab-public/tree/main/02-jellyfish-heart#run-the-renderer">How to run</a>
           <a href="https://www.instagram.com/reel/DgBKcSYN73Y/">Watch on Instagram</a>
         </nav>
       </div>
