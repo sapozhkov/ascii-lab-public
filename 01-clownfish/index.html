@@ -10,23 +10,24 @@
 <body>
   <main class="shell">
     <a class="back" href="../">ASCII Lab gallery</a>
-    <article class="scene">
+    <article class="scene scene--source">
       <img src="preview.webp" width="540" height="960" alt="An orange ASCII clownfish swimming over a sea anemone">
       <div class="scene-copy">
         <span class="number">01</span>
         <h1>Clownfish &amp; anemone</h1>
-        <p>A procedural fish swims through an anemone. Its tail pushes against the water, and tentacles glow where the fish touches them.</p>
+        <p>One Python file simulates the fish and anemone, draws them in ASCII, and exports PNG or MP4.</p>
+        <a class="source-preview" href="https://github.com/sapozhkov/ascii-lab-public/blob/main/01-clownfish/clownfish.py" aria-label="View the full clownfish.py source on GitHub">
+          <span class="source-header"><span class="filename">clownfish.py</span><strong>View full source on GitHub</strong></span>
+          <pre><code>hz = 0.70 + 1.05 * e
+phi += TAU * hz * STEP
+push = THRUST * e * (0.30 + 0.70 * np.sin(phi - 0.9) ** 2)       # the tail pushes twice per beat
+v += (push - DRAG2 * v * abs(v) - DRAG1 * v) * STEP</code></pre>
+        </a>
         <nav class="actions" aria-label="Scene links">
-          <a href="https://www.instagram.com/reel/Df8L4ZnN4sX/">Watch on Instagram</a>
+          <a href="https://github.com/sapozhkov/ascii-lab-public/tree/main/01-clownfish#run-the-renderer">How to run</a>
           <a href="model.html">Explore the model</a>
-          <a href="https://github.com/sapozhkov/ascii-lab-public/tree/main/01-clownfish">Code and setup</a>
+          <a href="https://www.instagram.com/reel/Df8L4ZnN4sX/">Watch on Instagram</a>
         </nav>
-        <dl>
-          <dt><a href="https://github.com/sapozhkov/ascii-lab-public/blob/main/01-clownfish/clownfish.py">clownfish.py</a></dt>
-          <dd>One Python file with the simulation, ASCII renderer, and PNG and MP4 export.</dd>
-          <dt><a href="model.html">model.html</a></dt>
-          <dd>Explore the same 22-second loop from above and from the side. Scrub through the fish’s path and see how thrust, drag, and speed change.</dd>
-        </dl>
       </div>
     </article>
   </main>

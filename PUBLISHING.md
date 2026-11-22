@@ -6,7 +6,7 @@ This repository shares the source code behind ASCII Lab reels and provides publi
 
 1. Use the published reel number and a short English slug, such as `03-scene-name`. Keep the folder name once its link has been shared.
 2. Export a representative vertical still from the actual reel as `preview.webp`. Put it in the reel folder and write descriptive English alt text.
-3. Add `README.md` for GitHub and `index.html` for the public scene page. Include the preview, the Instagram reel link, and a short description with a link for each available file.
+3. Add `README.md` for GitHub and `index.html` for the public scene page. Include the preview, the Instagram reel link, and a short description with a link for each available file. When source code is available, put the link to the full file first. A short excerpt from the file can serve as the link.
 4. Copy the source for the published scene. Prefer one runnable file when it keeps the code clear. Include setup and a tested run command. Carry forward attribution where it applies.
 5. Add a self-contained `model.html` or a browser demo when it is ready. Link to the Pages URL from the README to open it as a web page. Link to the GitHub file to show its source.
 6. Add a card in the root `index.html` and an entry in the root `README.md`. A reel with only a preview and an Instagram link can appear while its code is being prepared.
