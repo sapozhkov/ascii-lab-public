@@ -16,18 +16,20 @@
         <span class="number">01</span>
         <h1>Clownfish &amp; anemone</h1>
         <p>One Python file simulates the fish and anemone, draws them in ASCII, and exports PNG or MP4.</p>
-        <a class="scene-card" href="https://github.com/sapozhkov/ascii-lab-public/blob/main/01-clownfish/clownfish.py" aria-label="View the full clownfish.py source on GitHub">
-          <span class="scene-card-header"><span class="filename">clownfish.py</span><strong>View full source on GitHub</strong></span>
-          <pre><code>hz = 0.70 + 1.05 * e
+        <div class="scene-cards">
+          <a class="scene-card" href="https://github.com/sapozhkov/ascii-lab-public/blob/main/01-clownfish/clownfish.py" aria-label="View the full clownfish.py source on GitHub">
+            <span class="scene-card-header"><span class="filename">clownfish.py</span><strong>View full source on GitHub</strong></span>
+            <pre><code>hz = 0.70 + 1.05 * e
 phi += TAU * hz * STEP
 push = THRUST * e * (0.30 + 0.70 * np.sin(phi - 0.9) ** 2)       # the tail pushes twice per beat
 v += (push - DRAG2 * v * abs(v) - DRAG1 * v) * STEP</code></pre>
-        </a>
-        <a class="scene-card" href="model.html" aria-label="Explore the interactive clownfish model">
-          <span class="scene-card-header"><span>Interactive model</span><strong>Explore the model</strong></span>
-          <img src="model-preview.webp" width="880" height="640" alt="Top view of the fish at 14.25 seconds, with its path, the anemone, and the camera">
-          <span class="model-caption">Drag the timeline to follow the fish, tentacles, and camera.</span>
-        </a>
+          </a>
+          <a class="scene-card scene-card--model" href="model.html" aria-label="Explore the interactive clownfish model">
+            <span class="scene-card-header"><span>Interactive model</span><strong>Explore the model</strong></span>
+            <img src="model-preview.webp" width="880" height="640" alt="Top view of the clownfish chasing food along its route at 14.25 seconds">
+            <span class="model-caption">Drag the timeline to follow the fish, tentacles, and camera.</span>
+          </a>
+        </div>
         <nav class="actions" aria-label="Scene links">
           <a href="https://github.com/sapozhkov/ascii-lab-public/tree/main/01-clownfish#run-the-renderer">How to run</a>
           <a href="https://www.instagram.com/reel/Df8L4ZnN4sX/">Watch on Instagram</a>
