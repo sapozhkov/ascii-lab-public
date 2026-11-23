@@ -8,5 +8,3 @@ Source code and interactive models for the procedural ASCII reels at [@ascii.lab
 | --- | --- |
 | [![Clownfish preview](01-clownfish/preview.webp)](01-clownfish/) | [![Jellyfish preview](02-jellyfish-heart/preview.webp)](02-jellyfish-heart/) |
 | [Code and model](01-clownfish/) | [Code and model](02-jellyfish-heart/) |
-
-See [Publishing guide](PUBLISHING.md) to add a reel.
