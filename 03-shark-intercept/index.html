@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A procedural ASCII shark hunt, with Python source and a synchronized swimming model.">
+  <title>Shark intercept | ASCII Lab</title>
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <main class="shell">
+    <a class="back" href="../">ASCII Lab gallery</a>
+    <article class="scene scene--source">
+      <img src="preview.webp" width="540" height="960" alt="A dark ASCII shark approaches a lone fish beside a silver school">
+      <div class="scene-copy">
+        <span class="number">03</span>
+        <h1>Shark intercept</h1>
+        <p>A shark approaches a school of 80 fish. One breaks away. Tail strokes power the chase, and the counter drops when the shark makes contact.</p>
+        <div class="scene-cards">
+          <a class="scene-card" href="https://github.com/sapozhkov/ascii-lab-public/blob/main/03-shark-intercept/source/proto/shark_studies/dive_pose.py" aria-label="View the shark simulation source on GitHub">
+            <span class="scene-card-header"><span class="filename">dive_pose.py</span><strong>View source on GitHub</strong></span>
+            <pre><code>def water_acceleration(velocity, forward, thrust, speed):
+    &quot;&quot;&quot;Combine axial tail thrust with hull drag and resistance to sideslip.&quot;&quot;&quot;
+    lateral = velocity - forward * (velocity @ forward)
+    return thrust * forward - 2.45 * speed * velocity - 2.9 * lateral</code></pre>
+          </a>
+          <a class="scene-card scene-card--model" href="model.html" aria-label="Explore the synchronized shark swimming model">
+            <span class="scene-card-header"><span>Interactive model</span><strong>Explore the model</strong></span>
+            <span class="model-preview">
+              <img src="model-preview.webp" width="860" height="360" style="object-position:center" alt="The ASCII shark and school beside a diagram of their positions and the shark’s spine">
+            </span>
+            <span class="model-caption">Scrub the reel, track the lone fish, and see the shark’s speed, thrust and roll.</span>
+          </a>
+        </div>
+        <nav class="actions" aria-label="Scene links">
+          <a href="https://github.com/sapozhkov/ascii-lab-public/tree/main/03-shark-intercept#run-the-renderer">How to run</a>
+          <a href="cutoff.mp4">Watch the reel</a>
+        </nav>
+      </div>
+    </article>
+  </main>
+</body>
+</html>

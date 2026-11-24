@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shark intercept · swimming model</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#08151a;color:#d2e3e3;font:16px system-ui,sans-serif}
+main{max-width:950px;margin:auto;padding:18px}h1{font-size:22px;margin:0 0 12px}
+.views{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+video,canvas{width:100%;display:block;background:#0a2029}figure{margin:0}figcaption,p{margin:8px 0}
+button,input{accent-color:#8ed7d3}button{background:#163039;color:inherit;border:1px solid #507079;padding:6px 10px;border-radius:4px}
+nav{display:flex;align-items:center;gap:8px;margin:.8em 0}input[type=range]{flex:1;min-width:20px}output{font-variant-numeric:tabular-nums}
+@media(max-width:550px){main{padding:8px}.views{gap:5px}h1{font-size:18px}}
+</style>
+<main><h1>Shark intercept · swimming model</h1>
+<div class="views"><figure><figcaption>ASCII</figcaption><video src="cutoff.mp4" playsinline muted preload="auto"></video></figure>
+<figure><figcaption>Overhead view</figcaption><canvas width="540" height="648"></canvas>
+<p><label><input type="checkbox" id="mark"> Track the fish that breaks away</label></p>
+<p id="stage"></p></figure></div>
+<nav><button id="play">Play</button><input type="range" min="0" step="1" value="0" aria-label="Frame"><output></output></nav></main>
+<script>
+const frames=__FRAMES__, fps=__FPS__;
+const video=document.querySelector('video'), canvas=document.querySelector('canvas'), ctx=canvas.getContext('2d');
+const slider=document.querySelector('input[type=range]'), target=frames.find(f=>f.target!==null).target;
+slider.max=frames.length-1;
+function line(points,color,width){
+ ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();
+ points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.stroke();
+}
+function draw(i){
+ const f=frames[i];ctx.setTransform(6,0,0,6,0,0);ctx.fillStyle='#0a2029';ctx.fillRect(0,0,90,108);
+ ctx.strokeStyle='#14333b';ctx.lineWidth=.13;ctx.beginPath();
+ for(let n=0;n<108;n+=10){ctx.moveTo(0,n);ctx.lineTo(90,n);ctx.moveTo(n,0);ctx.lineTo(n,108)}ctx.stroke();
+ f.fish.forEach(([x,y],j)=>{
+   if(f.caught&&j===target)return;
+   const prev=frames[Math.max(0,i-4)];
+   const tail=prev.fish[j];
+   if(tail && Math.hypot(x-tail[0],y-tail[1])<5)line([tail,[x,y]],'#5b858b',.35);
+   ctx.fillStyle='#d1ebe7';ctx.beginPath();ctx.arc(x,y,.38,0,2*Math.PI);ctx.fill();
+ });
+ line(f.spine,'#709aa6',.9);f.spine.filter((p,j)=>j%3===0).forEach(([x,y])=>{
+   ctx.fillStyle='#bbd5d0';ctx.beginPath();ctx.arc(x,y,.4,0,7);ctx.fill()
+ });
+ if(mark.checked&&!f.caught){
+   line(frames.slice(Math.max(0,i-fps),i+1).filter(s=>!s.caught).map(s=>s.fish[target]),'#f6b77b',.35);
+   ctx.strokeStyle='#ffd59c';ctx.lineWidth=.3;ctx.beginPath();ctx.arc(...f.fish[target],1.65,0,2*Math.PI);ctx.stroke();
+ }
+ slider.value=i;document.querySelector('output').value=(i/fps).toFixed(2)+' s';
+ const stage=document.querySelector('#stage');
+ stage.textContent=f.stage;
+ if(f.swim){
+   const [speed,thrust,drag,sweep,bank]=f.swim;
+   stage.textContent+=` · Speed ${speed.toFixed(2)} · Tail sweep ${sweep.toFixed(2)} · Thrust ${thrust.toFixed(2)} · Drag ${drag.toFixed(2)}`;
+   if(bank!==undefined)stage.textContent+=` · Roll ${bank.toFixed(1)}°`;
+ }
+}
+const current=()=>Math.min(frames.length-1,Math.floor(video.currentTime*fps+.0001));
+const play=document.querySelector('#play'), mark=document.querySelector('#mark');
+play.onclick=()=>{if(video.ended)video.currentTime=0;video.paused?video.play():video.pause()};
+video.onplay=()=>{play.textContent='Pause'};video.onpause=()=>{play.textContent='Play'};
+slider.oninput=()=>{video.pause();video.currentTime=(Number(slider.value)+.01)/fps;draw(Number(slider.value))};
+video.onseeked=()=>draw(current());mark.onchange=()=>draw(current());
+function tick(_,m){draw(Math.min(frames.length-1,Math.round(m.mediaTime*fps)));video.requestVideoFrameCallback(tick)}
+if(video.requestVideoFrameCallback)video.requestVideoFrameCallback(tick);else video.ontimeupdate=()=>draw(current());
+draw(0);
+</script></html>
