@@ -4,9 +4,9 @@ from dataclasses import dataclass, replace
 
 import numpy as np
 
-from .dive_pose import STATION, SwimPose, Swimmer, centreline, mouth, muscle_wave
-from .encounter_motion import DT, FPS, body_gap
-from .encounter_water import smoothstep, unit
+from .dive_pose import STATION, SwimPose, Swimmer, centreline, mouth, muscle_wave, smoothstep, unit
+FPS = 24
+DT = 1 / FPS
 
 
 SECONDS = 12
@@ -274,3 +274,13 @@ def states(seconds=SECONDS, *, wider_escape=True, evasive_prey=False):
         yield CutoffFrame(pose, pos.copy(), vel, phase.copy(), sizes,
                           alerted.astype(float), chase,
                           stage, captured)
+
+
+def body_gap(points, shark):
+    station = np.clip((points-shark.center) @ shark.forward, -.44,.45)
+    nearest = shark.center + station[:,None]*shark.forward
+    offset = points-nearest
+    # Bounding capsule encloses the pectoral fins and the oscillating tail.
+    radius = np.interp(station, [-.44,-.31,-.16,.01,.18,.32,.45],
+                       [.15,.17,.15,.25,.23,.15,.09])
+    return np.linalg.norm(offset,axis=1)-radius, unit(offset)

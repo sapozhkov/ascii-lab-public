@@ -9,7 +9,7 @@ import math
 
 import numpy as np
 
-from .encounter_water import unit
+# Vector helpers are defined below the swimmer.
 
 
 AXIAL = np.linspace(.505, -.505, 27)
@@ -206,3 +206,12 @@ def mouth(pose):
     # Mid-aperture between the upper rostrum and the moving mandible.
     lips = world_points([[.451,0,-.006],[.451,0,-.029]],pose)
     return lips.mean(axis=0)
+
+
+def unit(v):
+    return v / np.maximum(np.linalg.norm(v, axis=-1, keepdims=True), 1e-8)
+
+
+def smoothstep(lo, hi, x):
+    a = np.clip((x-lo)/(hi-lo), 0, 1)
+    return a*a*(3-2*a)
