@@ -16,6 +16,8 @@ The interactive model pairs the silent ASCII scene with geometry sampled from th
 | [source/renderer.py](source/renderer.py) | Projects the geometry to a grid and paints the ASCII glyphs. |
 | [source/reef.py](source/reef.py) | Builds the rock shelf, sea pen, anemone, and light shafts. |
 
+The code card opens the main renderer. The preview shows [the spread function](source/duet.py#L21-L22), which controls how far apart the pair swims.
+
 ## Run the renderer
 
 Use Python 3.9 or later. The commands below use the NumPy and Pillow versions tested with Python 3.9. For MP4 output, install FFmpeg with H.264 encoding support and make it available on your PATH. Keep the `source/` directory alongside `jellyfish.py`.
