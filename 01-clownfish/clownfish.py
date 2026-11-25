@@ -1051,6 +1051,9 @@ def mp4(path, code, dur):
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     commands = parser.add_subparsers(dest="format", required=True)
+    terminal = commands.add_parser("terminal", help="Play the scene in an ANSI terminal")
+    terminal.add_argument("--duration", type=float, default=LOOP,
+                          help="Playback time in seconds (default: one loop)")
     png = commands.add_parser("png", help="Render one frame")
     png.add_argument("time", type=float, help="Time in seconds")
     png.add_argument("output")
@@ -1061,7 +1064,11 @@ def main():
     for command in (png, video):
         command.add_argument("--no-code", action="store_true", help="Hide the code panel")
     args = parser.parse_args()
-    if args.format == "png":
+    if args.format == "terminal":
+        from terminal_player import play_terminal
+
+        play_terminal(lambda t: grid(t, ROWS_CODE), fps=FPS, duration=args.duration)
+    elif args.format == "png":
         frame(args.time, code=not args.no_code).save(args.output)
     else:
         if not np.isfinite(args.duration) or args.duration < 1 / FPS:

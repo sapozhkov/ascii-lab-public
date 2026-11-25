@@ -8,7 +8,8 @@ The tail drives the fish through the water. The anemone’s tentacles bend and l
 
 | File | What it does |
 | --- | --- |
-| [clownfish.py](clownfish.py) | Simulates the scene and draws it as a character grid. Exports a still or a silent video. |
+| [clownfish.py](clownfish.py) | Simulates the scene, plays it in the terminal, and exports a still or a silent video. |
+| [terminal_player.py](terminal_player.py) | Displays the character grid using ANSI true color. |
 | [tail_sway.py](tail_sway.py) | Standalone example of the sideways body wave and the bend during a turn. |
 | [model.html](https://sapozhkov.github.io/ascii-lab-public/01-clownfish/model.html) | Plots the fish’s path and forces over the 22-second loop. The file can also run locally in a browser. |
 
@@ -16,14 +17,17 @@ The code preview shows the body-wave example. Run `python3 tail_sway.py` to try 
 
 ## Run the renderer
 
-Use Python 3.10 or later. The commands below use the NumPy and Pillow versions tested with Python 3.11. For MP4 output, install FFmpeg with H.264 encoding support and make it available on your PATH.
+Use Python 3.10 or later. The commands below use the NumPy and Pillow versions tested with Python 3.11. Run them from the `01-clownfish/` directory. For MP4 output, install FFmpeg with H.264 encoding support and make it available on your PATH.
 
 ```sh
 python3 -m pip install numpy==2.0.2 Pillow==11.3.0
+python3 clownfish.py terminal
 python3 clownfish.py png 3.0 frame.png
 python3 clownfish.py mp4 clownfish.mp4
 ```
 
-The renderer tries Menlo, DejaVu Sans Mono, and Consolas. If they are unavailable, set `ASCII_LAB_FONT` to the path of a monospace TTF or TTC font. Add `--no-code` to hide the code panel or `--duration 2` to render a short MP4 test.
+Terminal playback runs once and fits the character grid to the window. Use an ANSI true-color terminal with at least 91 columns and 73 rows to see every cell. Press `Ctrl+C` to stop.
+
+For PNG and MP4, the renderer tries Menlo, DejaVu Sans Mono, and Consolas. If they are unavailable, set `ASCII_LAB_FONT` to the path of a monospace TTF or TTC font. Add `--no-code` to hide the code panel or `--duration 2` to render a short MP4 test.
 
 The composition was inspired by a photo by Nhobgood on Wikimedia Commons.
