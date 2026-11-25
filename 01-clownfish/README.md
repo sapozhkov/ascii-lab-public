@@ -9,7 +9,10 @@ The tail drives the fish through the water. The anemone’s tentacles bend and l
 | File | What it does |
 | --- | --- |
 | [clownfish.py](clownfish.py) | Simulates the scene and draws it as a character grid. Exports a still or a silent video. |
+| [tail_sway.py](tail_sway.py) | Standalone example of the sideways body wave and the bend during a turn. |
 | [model.html](https://sapozhkov.github.io/ascii-lab-public/01-clownfish/model.html) | Plots the fish’s path and forces over the 22-second loop. The file can also run locally in a browser. |
+
+The code preview shows the body-wave example. Run `python3 tail_sway.py` to try it.
 
 ## Run the renderer
 

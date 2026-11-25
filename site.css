@@ -98,7 +98,7 @@ img { display: block; height: auto; width: 100%; }
 .source-token--string { color: #a5ddab; }
 .model-caption { display: block; padding: .65rem 1rem; color: var(--muted); font-size: .875rem; }
 
-.scene-cards--listing { grid-auto-rows: 1fr; }
+.scene-cards--listing { grid-auto-rows: minmax(10.3125rem, 1fr); }
 .scene-cards--listing .scene-card { border-radius: 2px; }
 .scene-cards--listing .scene-card .scene-card-header {
   flex: none;

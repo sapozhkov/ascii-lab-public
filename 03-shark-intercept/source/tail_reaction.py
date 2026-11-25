@@ -5,12 +5,12 @@ slope. The coefficient matches caudal_reaction in dive_pose.py.
 """
 
 
-def tail_reaction(
-    sweep, slope, advance,
-):
+def tail_reaction(sweep, slope,
+                  advance):
     inflow = advance * slope
-    push = sweep**2 - inflow**2
-    return 0.75 * push
+    push = sweep**2
+    loss = inflow**2
+    return .75 * (push - loss)
 
 
 if __name__ == "__main__":
