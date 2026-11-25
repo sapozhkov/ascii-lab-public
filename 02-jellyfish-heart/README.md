@@ -37,3 +37,5 @@ Terminal playback runs once and fits the character grid to the window. Use an AN
 The exports cover the visible ASCII scene and reef. The Instagram reel adds a code panel, a status strip, and music. Choose `--duration 2` for a short MP4 test.
 
 For PNG and MP4, the renderer tries Menlo, DejaVu Sans Mono, and Consolas. Set `ASCII_LAB_FONT` to use a different monospace TTF or TTC font.
+
+[Scientific references](https://sapozhkov.github.io/ascii-lab-public/02-jellyfish-heart/model.html#scientific-references)

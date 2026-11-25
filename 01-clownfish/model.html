@@ -28,6 +28,7 @@ ol{margin:6px 0 0;padding-left:20px}li{margin:3px 0}code{font-family:ui-monospac
 <a class="back" href="index.html">Back to the release</a>
 <h1>Clownfish and anemone</h1>
 <p class="sub">Explore one 22-second loop sampled from the scene in the reel. Press Play or drag the timeline.</p>
+<a class="model-references-link" href="#visual-references">Visual references</a>
 
 <section class="model-playback" aria-label="Playback">
   <div class="model-transport">
@@ -72,6 +73,23 @@ ol{margin:6px 0 0;padding-left:20px}li{margin:3px 0}code{font-family:ui-monospac
   <p><b>Glow.</b> Contact lights up the chain. The glow spreads toward the tip at 13.0 nodes per second and fades with a time constant of 0.7 seconds.</p>
   <p><b>Camera.</b> The camera follows the fish with a delay. It swings around the center by <code>0.24 × horizontal offset</code> radians and pulls back as the fish approaches.</p></div>
 </div>
+<section class="model-references" id="visual-references" aria-labelledby="references-title">
+  <h2 id="references-title">Visual references</h2>
+<article class="research-note">
+    <h3>Composition and swimming</h3>
+    <ul class="research-sources">
+      <li>
+        <p>The photograph informed the three-quarter view and the way the orange fish stands out against the anemone.</p>
+        <a href="https://commons.wikimedia.org/wiki/File:Clown_Anemonfish_Amphiprion_ocellaris.jpg" target="_blank" rel="noopener">Vardhanjp (2018) · Clown Anemonefish · Wikimedia Commons</a>
+      </li>
+      <li>
+        <p>The footage was a reference for how the fish swims around and slips between the anemone’s tentacles.</p>
+        <a href="https://www.youtube.com/watch?v=ndT2voMu4S0" target="_blank" rel="noopener">Underwater Tribe · Clown Fish Swimming Around an Anemone</a>
+      </li>
+    </ul>
+    <p class="parameters">The tail thrust, water drag and tentacle response were tuned for the scene.</p>
+  </article>
+</section>
 </main>
 <script>function createModelPlayer({ fps, frameCount, draw, video }) {
   const play = document.querySelector('[data-model-play]');

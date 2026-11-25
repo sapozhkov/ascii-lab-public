@@ -30,4 +30,4 @@ Terminal playback runs once and fits the character grid to the window. Use an AN
 
 For PNG and MP4, the renderer tries Menlo, DejaVu Sans Mono, and Consolas. If they are unavailable, set `ASCII_LAB_FONT` to the path of a monospace TTF or TTC font. Add `--no-code` to hide the code panel or `--duration 2` to render a short MP4 test.
 
-The composition was inspired by a photo by Nhobgood on Wikimedia Commons.
+[Visual references](https://sapozhkov.github.io/ascii-lab-public/01-clownfish/model.html#visual-references)

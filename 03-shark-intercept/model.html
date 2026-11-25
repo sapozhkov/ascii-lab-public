@@ -5,7 +5,10 @@
 <style>
 *{box-sizing:border-box}body{margin:0;background:#08151a;color:#d2e3e3;font:16px system-ui,sans-serif}
 main{max-width:950px;margin:auto;padding:18px}h1{font-size:22px;margin:0 0 12px}
-.views{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+.model-heading{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:0 1rem;margin-bottom:12px}
+.model-heading h1{margin:0}
+.model-heading .model-references-link{margin-bottom:0}
+.views{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start;scroll-margin-top:7rem}
 video,canvas{width:100%;display:block;background:#0a2029}figure{margin:0}figcaption,p{margin:8px 0}
 input{accent-color:#8ed7d3}
 @media(max-width:550px){main{padding:8px}.views{gap:5px}h1{font-size:18px}}
@@ -13,7 +16,10 @@ input{accent-color:#8ed7d3}
 </head><body>
 <main>
 <a class="back" href="index.html">Back to the release</a>
-<h1>Shark intercept · swimming model</h1>
+<header class="model-heading">
+  <h1>Shark intercept · swimming model</h1>
+  <a class="model-references-link" href="#scientific-references">Scientific references</a>
+</header>
 <section class="model-playback" aria-label="Playback">
   <div class="model-transport">
     <button data-model-play type="button">Play</button>
@@ -27,6 +33,66 @@ input{accent-color:#8ed7d3}
 <figure><figcaption>Overhead view</figcaption><canvas width="540" height="648" aria-label="Overhead diagram of the shark and fish"></canvas>
 <p><label><input type="checkbox" id="mark"> Track the fish that breaks away</label></p>
 <p id="stage"></p></figure></div>
+<section class="model-references" id="scientific-references" aria-labelledby="references-title">
+  <h2 id="references-title">Scientific references</h2>
+<article class="research-note">
+    <header>
+      <h3>How the tail drives the chase</h3>
+      <button type="button" id="show-tail-stroke">Show the stroke at <span></span></button>
+    </header>
+    <p>A bend travels down the shark’s body toward the tail. During the chase, the model uses the speed of the tail sweep, the tail angle and the shark’s forward speed to estimate thrust.</p>
+    <p>Scrub from 7.00 to 7.25 s to see three peaks in order: <strong>Tail sweep</strong> at 7.04 s, <strong>Thrust</strong> at 7.13 s and <strong>Speed</strong> at 7.25 s.</p>
+    <ul class="research-sources">
+      <li>
+        <p>The trailing edge of the fin reached its widest swing later than points ahead of it. This informed the delayed bend toward the tail.</p>
+        <a href="https://bpb-us-e1.wpmucdn.com/sites.harvard.edu/dist/6/58/files/2022/03/FerryLauder.1996.pdf" target="_blank" rel="noopener">Ferry &amp; Lauder (1996) · Heterocercal tail function in leopard sharks: a three-dimensional kinematic analysis of two models</a>
+      </li>
+      <li>
+        <p>Measurements of the wake showed how the tail pushes water. This informed the simplified thrust calculation used in the chase.</p>
+        <a href="https://bpb-us-e1.wpmucdn.com/sites.harvard.edu/dist/6/58/files/2022/03/WilgaLauder2002.pdf" target="_blank" rel="noopener">Wilga &amp; Lauder (2002) · Function of the heterocercal tail in sharks: quantitative wake dynamics during steady horizontal swimming and vertical maneuvering</a>
+      </li>
+    </ul>
+    <p class="parameters">Tail stiffness, damping and thrust coefficients were tuned for this scene.</p>
+  </article>
+  <article class="research-note">
+    <h3>Schooling, steering and prey capture</h3>
+    <ul class="research-sources">
+      <li>
+        <strong>The school turns in a wave</strong>
+        <p>Observations of escape waves informed the rule that each row reacts to the fish ahead of it.</p>
+        <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4448869/" target="_blank" rel="noopener">Herbert-Read et al. (2015) · Initiation and spread of escape waves within animal groups</a>
+      </li>
+      <li>
+        <strong>The shark steers into the turn</strong>
+        <p>Observations of turning bonnethead sharks informed the body bend and the lowering of the inside pectoral fin.</p>
+        <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7671128/" target="_blank" rel="noopener">Hoffmann &amp; Porter (2019) · Body and Pectoral Fin Kinematics During Routine Yaw Turning in Bonnethead Sharks (<i>Sphyrna tiburo</i>)</a>
+      </li>
+      <li>
+        <strong>The fish turns before it darts away</strong>
+        <p>The study of how a fish’s heading affects its escape informed the short turn before the tail kick.</p>
+        <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6078344/" target="_blank" rel="noopener">Kimura &amp; Kawabata (2018) · Effect of initial body orientation on escape probability of prey fish escaping from predators</a>
+      </li>
+      <li>
+        <strong>The shark opens its jaws on approach</strong>
+        <p>The sequence observed in lemon sharks informed when the model opens its jaws as it closes in on the fish.</p>
+        <a href="https://www.hawaii.edu/fishlab/pubs/Motta%20et%20al.%201997.pdf" target="_blank" rel="noopener">Motta et al. (1997) · Feeding mechanism and functional morphology of the jaws of the lemon shark <i>Negaprion brevirostris</i> (Chondrichthyes, Carcharhinidae)</a>
+      </li>
+    </ul>
+  </article>
+  <details class="research-note">
+    <summary>References from early studies</summary>
+    <ul class="research-sources">
+      <li>
+        <p>Measurements from leopard sharks informed the body and fin angles in early rise and dive tests.</p>
+        <a href="https://pubmed.ncbi.nlm.nih.gov/10887066/" target="_blank" rel="noopener">Wilga &amp; Lauder (2000) · Three-dimensional kinematics and wake structure of the pectoral fins during locomotion in leopard sharks <i>Triakis semifasciata</i></a>
+      </li>
+      <li>
+        <p>Observations of sardines and striped marlin informed early tests of the school splitting around a predator and regrouping.</p>
+        <a href="https://iris.cnr.it/bitstream/20.500.14243/517723/1/s42003-024-07267-2.pdf" target="_blank" rel="noopener">Bartashevich et al. (2024) · Collective anti-predator escape manoeuvres through optimal attack and avoidance strategies</a>
+      </li>
+    </ul>
+  </details>
+</section>
 </main>
 <script>function createModelPlayer({ fps, frameCount, draw, video }) {
   const play = document.querySelector('[data-model-play]');
@@ -191,4 +257,12 @@ function draw(i){
 }
 const player=createModelPlayer({ fps, frameCount: frames.length, video, draw: (_seconds, frame) => draw(frame) });
 mark.addEventListener('change', player.redraw);
+const strokeTime = 7.125;
+const strokeButton = document.querySelector('#show-tail-stroke');
+strokeButton.querySelector('span').textContent = `${strokeTime.toFixed(2)} s`;
+strokeButton.addEventListener('click', () => {
+  player.seek(strokeTime * fps);
+  document.querySelector('#model-timeline').focus({ preventScroll: true });
+  document.querySelector('.views').scrollIntoView();
+});
 </script></body></html>

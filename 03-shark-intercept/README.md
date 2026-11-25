@@ -36,3 +36,5 @@ Open `source/output/cutoff.mp4` for the reel or `source/output/model.html` for t
 The code card opens the main renderer. Its preview shows the standalone tail reaction example, which uses the same formula as the swimmer model. Run `python3 source/tail_reaction.py` from this directory to try it.
 
 The swimming model uses a simplified tail reaction, body drag and articulated spine. Its hydrodynamic coefficients were tuned for this scene. See the references in `source/proto/shark_studies/dive_pose.py`.
+
+[Scientific references](https://sapozhkov.github.io/ascii-lab-public/03-shark-intercept/model.html#scientific-references)
