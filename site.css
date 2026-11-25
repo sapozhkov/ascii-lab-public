@@ -41,7 +41,7 @@ img { display: block; height: auto; width: 100%; }
 .scene--source .scene-copy { align-self: start; min-width: 0; }
 .scene-copy h1 { font-size: clamp(1.75rem, 5vw, 3rem); }
 .actions { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; margin: 1.25rem 0; }
-.scene-cards { display: grid; grid-auto-rows: 1fr; gap: 1rem; }
+.scene-cards { display: grid; gap: 1rem; }
 .scene-card { display: block; color: inherit; border: 1px solid var(--edge); background: #101923; text-decoration: none; }
 .scene-card--model { display: flex; flex-direction: column; }
 .model-preview { position: relative; flex: 1 0 6rem; overflow: hidden; }
@@ -55,41 +55,27 @@ img { display: block; height: auto; width: 100%; }
   display: flex;
   flex-direction: column;
   min-width: 0;
-  overflow-x: auto;
-  overscroll-behavior-inline: contain;
-  scrollbar-width: thin;
-  scrollbar-color: #53677d #0b131d;
   background: #0b131d;
 }
 .scene-card--source .scene-card-header {
-  position: sticky;
-  inset-inline-start: 0;
-  z-index: 2;
-  flex: none;
   background: #101923;
+  font-size: .875rem;
 }
 .source-preview {
-  display: flex;
-  flex: 1 0 auto;
-  align-items: center;
-  inline-size: max-content;
-  min-inline-size: 100%;
   margin: 0;
-  padding: .65rem 0;
+  padding: .6rem 0;
   color: #e5edf4;
-  font-size: .875rem;
+  font-size: clamp(.6875rem, 3.1vw, .8125rem);
   line-height: 1.7;
   tab-size: 4;
   white-space: normal;
 }
-.source-preview code { display: block; min-inline-size: 100%; font: inherit; }
+.source-preview code { display: block; font: inherit; }
 .source-line { display: flex; min-block-size: 1.7em; }
 .source-line-number {
-  position: sticky;
-  inset-inline-start: 0;
-  z-index: 1;
-  min-inline-size: calc(4ch + 1.25rem);
-  padding-inline: .65rem .6rem;
+  flex: none;
+  min-inline-size: calc(4ch + .75rem);
+  padding-inline: .375rem;
   border-inline-end: 1px solid #2c3b4a;
   background: var(--source-gutter);
   color: #93a8bb;
@@ -97,7 +83,12 @@ img { display: block; height: auto; width: 100%; }
   font-variant-numeric: tabular-nums;
   user-select: none;
 }
-.source-text { padding-inline: .75rem 1rem; white-space: pre; }
+.source-text {
+  min-inline-size: 0;
+  padding-inline: .5rem .625rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 .source-token--comment { color: #9aadb9; }
 .source-token--constant { color: #a9c5ff; }
 .source-token--function { color: #86d4f0; }
