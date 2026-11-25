@@ -221,12 +221,10 @@ def paint_material(chars, ink):
     return np.asarray(ImageChops.add(image, glow))
 
 
-def compose(source, background):
+def reef_clearance(occupied):
     # One native cell of clearance around lit foreground glyphs, including
     # their dim phosphor halo. Preserve both empty space inside the heart and
     # the dark underside of the bells if a distant pen passes behind them.
-    low = Image.fromarray(source).resize((COLS, ROWS), Image.Resampling.BOX)
-    occupied = np.asarray(low).max(axis=2) > 17
     for line in occupied:
         hits = np.flatnonzero(line)
         if len(hits) > 4:
@@ -235,9 +233,26 @@ def compose(source, background):
                 if len(run) > 3:
                     line[run[0] : run[-1] + 1] = True
     water = Image.fromarray(np.where(occupied, 0, 255).astype(np.uint8))
-    water = water.filter(ImageFilter.MinFilter(3)).resize((WIDTH, HEIGHT), Image.Resampling.BILINEAR)
+    return water.filter(ImageFilter.MinFilter(3))
+
+
+def compose(source, background):
+    low = Image.fromarray(source).resize((COLS, ROWS), Image.Resampling.BOX)
+    water = reef_clearance(np.asarray(low).max(axis=2) > 17)
+    water = water.resize((WIDTH, HEIGHT), Image.Resampling.BILINEAR)
     reef = Image.composite(Image.fromarray(background), Image.new('RGB', (WIDTH, HEIGHT)), water)
     return np.maximum(source, np.asarray(reef))
+
+
+def compose_grids(swimmers, terrain):
+    chars, ink = swimmers
+    reef_chars, reef_ink = terrain
+    # Leave the reef visible around dim plankton.
+    occupied = (chars != 0) & (ink.max(axis=2) > 0.32)
+    show_reef = (chars == 0) & np.asarray(reef_clearance(occupied), dtype=bool)
+    displayed_ink = np.clip(ink, 0, 1) ** 0.70
+    return (np.where(show_reef, reef_chars, chars),
+            np.where(show_reef[..., None], reef_ink / 255, displayed_ink))
 
 
 # Each crest focuses sunlight into a sheet. Its neighbours share the swell
@@ -393,7 +408,7 @@ class RockShelf:
         project_material(self.path, t, parts, chars, ink)
         return chars, ink
 
-    def frame(self, t):
+    def grid(self, t):
         chars = np.zeros((ROWS, COLS), np.uint8)
         ink = np.zeros((ROWS, COLS, 3), np.uint8)
         draw_shafts(t, chars, ink)
@@ -410,4 +425,7 @@ class RockShelf:
         solid = soil != 0
         ink[solid] = pigment[solid]
         chars[solid] = soil[solid]
-        return paint_material(chars, ink)
+        return chars, ink
+
+    def frame(self, t):
+        return paint_material(*self.grid(t))

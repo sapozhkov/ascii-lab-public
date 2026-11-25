@@ -287,7 +287,7 @@ def pose_parts(points, glyph, color, kinds, path, t):
     return posed
 
 
-def render(path, t):
+def grid(path, t):
     key = yaw(SURFACE_LIGHT, path.start_angle - path.camera(t))
     # While the opening heart separates, let the closing shot's side light
     # turn back towards the normal opening light along the shorter arc.
@@ -314,6 +314,11 @@ def render(path, t):
     chars[y[ok],x[ok]]=np.where(j.DOT[ok,2]>.8,j.glyph_id('+'),j.glyph_id('.'))
     ink[y[ok],x[ok]]=j.rgb(107,144,162)*(.8-.1*z[ok,None])
     j.rasterize(CLOCK,chars,ink,points,glyph,color,kinds,OFFSET)
+    return chars, ink
+
+
+def render(path, t):
+    chars, ink = grid(path, t)
     pixels=j.paint(chars,ink)[:solo.HEIGHT]
     # Thicken strokes by a fraction of a pixel to keep the pair legible when
     # the full portrait is reduced to phone size.
