@@ -16,21 +16,21 @@
         <span class="number">03</span>
         <h1>Shark intercept</h1>
         <p>A shark approaches a school of 80 fish. One breaks away. Tail strokes power the chase, and the counter drops when the shark makes contact.</p>
-        <div class="scene-cards">
-          <a class="scene-card scene-card--source" href="https://github.com/sapozhkov/ascii-lab-public/blob/main/03-shark-intercept/source/proto/shark_studies/dive_pose.py" aria-label="View the shark simulation source on GitHub">
-            <span class="scene-card-header"><span class="filename">dive_pose.py</span><strong>View source on GitHub</strong></span>
-            <pre class="source-preview"><code><span class="source-line"><span class="source-line-number" aria-hidden="true">215</span><span class="source-text"><span class="source-token--keyword">def</span> <span class="source-token--function">smoothstep</span><span class="source-token--operator">(</span>lo<span class="source-token--operator">,</span> hi<span class="source-token--operator">,</span> x<span class="source-token--operator">)</span><span class="source-token--operator">:</span></span></span>
-<span class="source-line"><span class="source-line-number" aria-hidden="true">216</span><span class="source-text">    a <span class="source-token--operator">=</span> np<span class="source-token--operator">.</span><span class="source-token--function">clip</span><span class="source-token--operator">(</span></span></span>
-<span class="source-line"><span class="source-line-number" aria-hidden="true"></span><span class="source-text">        <span class="source-token--operator">(</span>x<span class="source-token--operator">-</span>lo<span class="source-token--operator">)</span><span class="source-token--operator">/</span><span class="source-token--operator">(</span>hi<span class="source-token--operator">-</span>lo<span class="source-token--operator">)</span><span class="source-token--operator">,</span> </span></span>
-<span class="source-line"><span class="source-line-number" aria-hidden="true"></span><span class="source-text">        <span class="source-token--number">0</span><span class="source-token--operator">,</span> <span class="source-token--number">1</span><span class="source-token--operator">)</span></span></span>
-<span class="source-line"><span class="source-line-number" aria-hidden="true">217</span><span class="source-text">    <span class="source-token--keyword">return</span> a<span class="source-token--operator">*</span>a<span class="source-token--operator">*</span><span class="source-token--operator">(</span><span class="source-token--number">3</span><span class="source-token--operator">-</span><span class="source-token--number">2</span><span class="source-token--operator">*</span>a<span class="source-token--operator">)</span></span></span></code></pre>
+        <div class="scene-cards scene-cards--listing">
+          <a class="scene-card scene-card--source" href="https://github.com/sapozhkov/ascii-lab-public/blob/main/03-shark-intercept/source/tail_reaction.py" aria-label="View the shark tail reaction example on GitHub">
+            <span class="scene-card-header"><span class="filename">tail_reaction.py</span><strong>View example on GitHub</strong></span>
+            <pre class="source-preview"><code><span class="source-line"><span class="source-line-number" aria-hidden="true">8</span><span class="source-text"><span class="source-token--keyword">def</span> <span class="source-token--function">tail_reaction</span><span class="source-token--operator">(</span></span></span>
+<span class="source-line"><span class="source-line-number" aria-hidden="true">9</span><span class="source-text">    sweep<span class="source-token--operator">,</span> slope<span class="source-token--operator">,</span> advance<span class="source-token--operator">,</span></span></span>
+<span class="source-line"><span class="source-line-number" aria-hidden="true">10</span><span class="source-text"><span class="source-token--operator">)</span><span class="source-token--operator">:</span></span></span>
+<span class="source-line"><span class="source-line-number" aria-hidden="true">11</span><span class="source-text">    inflow <span class="source-token--operator">=</span> advance <span class="source-token--operator">*</span> slope</span></span>
+<span class="source-line"><span class="source-line-number" aria-hidden="true">12</span><span class="source-text">    push <span class="source-token--operator">=</span> sweep<span class="source-token--operator">**</span><span class="source-token--number">2</span> <span class="source-token--operator">-</span> inflow<span class="source-token--operator">**</span><span class="source-token--number">2</span></span></span>
+<span class="source-line"><span class="source-line-number" aria-hidden="true">13</span><span class="source-text">    <span class="source-token--keyword">return</span> <span class="source-token--number">0.75</span> <span class="source-token--operator">*</span> push</span></span></code></pre>
           </a>
           <a class="scene-card scene-card--model" href="model.html" aria-label="Explore the synchronized shark swimming model">
             <span class="scene-card-header"><span>Interactive model</span><strong>Explore the model</strong></span>
-            <span class="model-preview" style="--model-preview-position: center">
+            <span class="model-preview" style="--model-preview-position: center 62%">
               <img src="model-preview.webp" width="860" height="360" alt="The ASCII shark and school beside a diagram of their positions and the shark’s spine">
             </span>
-            <span class="model-caption">Scrub the reel, track the lone fish, and see the shark’s speed, thrust and roll.</span>
           </a>
         </div>
         <nav class="actions" aria-label="Scene links">

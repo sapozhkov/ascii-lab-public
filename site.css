@@ -97,6 +97,27 @@ img { display: block; height: auto; width: 100%; }
 .source-token--operator { color: #abc3d8; }
 .source-token--string { color: #a5ddab; }
 .model-caption { display: block; padding: .65rem 1rem; color: var(--muted); font-size: .875rem; }
+
+.scene-cards--listing { grid-auto-rows: 1fr; }
+.scene-cards--listing .scene-card { border-radius: 2px; }
+.scene-cards--listing .scene-card .scene-card-header {
+  order: 2;
+  flex: none;
+  padding: .34rem .65rem;
+  border-top: 1px solid #293948;
+  border-bottom: 0;
+  background: #101923;
+  font-size: .6875rem;
+}
+.scene-cards--listing .source-preview {
+  padding-block: .5rem;
+  font-size: .75rem;
+  line-height: 1.64;
+}
+.scene-cards--listing .source-line { min-block-size: 1.64em; }
+.scene-cards--listing .source-line-number { min-inline-size: calc(3ch + .5rem); }
+.scene-cards--listing .model-preview { flex: 1 1 0; min-block-size: 0; }
+
 @media (max-width: 40rem) {
   .scene { grid-template-columns: 1fr; }
   .scene > img { max-width: 18rem; }
