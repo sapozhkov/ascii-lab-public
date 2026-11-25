@@ -26,6 +26,6 @@ python3 -m proto.shark_studies.cutoff_render
 
 Open `source/output/cutoff.mp4` for the reel or `source/output/model.html` for the matching model and frame scrubber. The export is 1080 × 1920 at 24 frames per second. The Instagram release adds music.
 
-Run `python3 source/tail_reaction.py` from this directory to try the example. It uses the same tail reaction formula as the swimmer model.
+The code card opens the main renderer. Its preview shows the standalone tail reaction example, which uses the same formula as the swimmer model. Run `python3 source/tail_reaction.py` from this directory to try it.
 
 The swimming model uses a simplified tail reaction, body drag and articulated spine. Its hydrodynamic coefficients were tuned for this scene. See the references in `source/proto/shark_studies/dive_pose.py`.

@@ -101,11 +101,9 @@ img { display: block; height: auto; width: 100%; }
 .scene-cards--listing { grid-auto-rows: 1fr; }
 .scene-cards--listing .scene-card { border-radius: 2px; }
 .scene-cards--listing .scene-card .scene-card-header {
-  order: 2;
   flex: none;
   padding: .34rem .65rem;
-  border-top: 1px solid #293948;
-  border-bottom: 0;
+  border-bottom: 1px solid #293948;
   background: #101923;
   font-size: .6875rem;
 }
