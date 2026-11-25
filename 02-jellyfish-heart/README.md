@@ -12,12 +12,13 @@ The interactive model pairs the silent ASCII scene with geometry sampled from th
 | --- | --- |
 | [jellyfish.py](jellyfish.py) | Renders the scene to PNG or silent MP4. |
 | [source/duet.py](source/duet.py) | Integrates the orbit, lift, and tentacles and poses the pair in the camera. |
+| [source/heart_pose.py](source/heart_pose.py) | Standalone example of how a point moves into the heart pose. |
 | [source/heart_height.py](source/heart_height.py) | Standalone example of the vertical coordinate on the heart outline. |
 | [source/swimmer.py](source/swimmer.py) | Builds the bell and lights its surface and ribbons. |
 | [source/renderer.py](source/renderer.py) | Projects the geometry to a grid and paints the ASCII glyphs. |
 | [source/reef.py](source/reef.py) | Builds the rock shelf, sea pen, anemone, and light shafts. |
 
-The code card opens the main renderer. The preview shows the heart-profile equation from the duet model. Run `python3 source/heart_height.py` to try the example.
+The code card opens the main renderer. The preview shows how [`heart_y`](source/heart_pose.py) moves a point toward the heart outline in the side view. It uses the point’s relative height in the swimming silhouette to place it between the edges of the heart. Run `python3 source/heart_pose.py` to try the example.
 
 ## Run the renderer
 
