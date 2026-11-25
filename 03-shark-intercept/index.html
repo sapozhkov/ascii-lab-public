@@ -17,12 +17,12 @@
         <h1>Shark intercept</h1>
         <p>A shark approaches a school of 80 fish. One breaks away. Tail strokes power the chase, and the counter drops when the shark makes contact.</p>
         <div class="scene-cards">
-          <a class="scene-card" href="https://github.com/sapozhkov/ascii-lab-public/blob/main/03-shark-intercept/source/proto/shark_studies/dive_pose.py" aria-label="View the shark simulation source on GitHub">
+          <a class="scene-card scene-card--source" href="https://github.com/sapozhkov/ascii-lab-public/blob/main/03-shark-intercept/source/proto/shark_studies/dive_pose.py" aria-label="View the shark simulation source on GitHub">
             <span class="scene-card-header"><span class="filename">dive_pose.py</span><strong>View source on GitHub</strong></span>
-            <pre><code>def water_acceleration(velocity, forward, thrust, speed):
-    &quot;&quot;&quot;Combine axial tail thrust with hull drag and resistance to sideslip.&quot;&quot;&quot;
-    lateral = velocity - forward * (velocity @ forward)
-    return thrust * forward - 2.45 * speed * velocity - 2.9 * lateral</code></pre>
+            <pre class="source-preview"><code><span class="source-line"><span class="source-line-number" aria-hidden="true">61</span><span class="source-text"><span class="source-token--keyword">def</span> <span class="source-token--function">water_acceleration</span><span class="source-token--operator">(</span>velocity<span class="source-token--operator">,</span> forward<span class="source-token--operator">,</span> thrust<span class="source-token--operator">,</span> speed<span class="source-token--operator">)</span><span class="source-token--operator">:</span></span></span>
+<span class="source-line"><span class="source-line-number" aria-hidden="true">62</span><span class="source-text">    <span class="source-token--string">&quot;&quot;&quot;Combine axial tail thrust with hull drag and resistance to sideslip.&quot;&quot;&quot;</span></span></span>
+<span class="source-line"><span class="source-line-number" aria-hidden="true">63</span><span class="source-text">    lateral <span class="source-token--operator">=</span> velocity <span class="source-token--operator">-</span> forward <span class="source-token--operator">*</span> <span class="source-token--operator">(</span>velocity <span class="source-token--operator">@</span> forward<span class="source-token--operator">)</span></span></span>
+<span class="source-line"><span class="source-line-number" aria-hidden="true">64</span><span class="source-text">    <span class="source-token--keyword">return</span> thrust <span class="source-token--operator">*</span> forward <span class="source-token--operator">-</span> <span class="source-token--number">2.45</span> <span class="source-token--operator">*</span> speed <span class="source-token--operator">*</span> velocity <span class="source-token--operator">-</span> <span class="source-token--number">2.9</span> <span class="source-token--operator">*</span> lateral</span></span></code></pre>
           </a>
           <a class="scene-card scene-card--model" href="model.html" aria-label="Explore the synchronized shark swimming model">
             <span class="scene-card-header"><span>Interactive model</span><strong>Explore the model</strong></span>
