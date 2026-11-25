@@ -523,7 +523,7 @@ def join_shoals(primary, secondary):
     })
 
 
-def write_model(frames, camera, output):
+def model_frames(frames, camera):
     data = []
     for f in frames:
         def coords(points):
@@ -535,6 +535,11 @@ def write_model(frames, camera, output):
         data[-1]["swim"] = [round(float(value), 3) for value in
                             (pose.speed, pose.thrust, 2.45*pose.speed**2,
                              pose.tail_speed, np.rad2deg(pose.bank))]
+    return data
+
+
+def write_model(frames, camera, output):
+    data = model_frames(frames, camera)
     template = Path(__file__).with_name("cutoff_view.html").read_text(encoding="utf-8")
     payload = json.dumps(data, ensure_ascii=False, separators=(',', ':'), default=int)
     page = template.replace("__FRAMES__", payload).replace("__FPS__", str(FPS))
@@ -655,39 +660,56 @@ def header(speed, fish, after_catch, font):
     return image
 
 
+def silver_print_lut():
+    # A gentle shoulder keeps the silver flanks legible after phone downsampling.
+    levels = np.arange(256, dtype=float) / 255
+    return np.uint8(np.rint(255 * np.minimum(1., levels + .18 *
+                                smoothstep(.18, .63, levels) * (1. - levels))))
+
+
+def render_plate(frame, camera, index, swimmer_time, silver_print):
+    chars, ink, paper = grid(frame, camera, index / FPS, swimmer_time)
+    scene = paint(chars, ink, atlas(), paper, bloom=.26)
+    return cv2.LUT(scene, silver_print)
+
+
 def render_scene(frames, camera, swimmer_times, output):
     # Keep the first encode so the published scene and type reproduce exactly.
     panel = code_panel((caudal_reaction, water_acceleration))
-    # A gentle shoulder keeps the silver flanks legible after phone downsampling.
-    levels = np.arange(256, dtype=float) / 255
-    silver_print = np.uint8(np.rint(255 * np.minimum(1., levels + .18 *
-                                smoothstep(.18, .63, levels) * (1. - levels))))
+    silver_print = silver_print_lut()
     cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-f", "rawvideo",
            "-pix_fmt", "rgb24", "-s", "1080x1920", "-r", str(FPS), "-i", "-",
            "-an", "-c:v", "libx264", "-preset", "veryfast", "-crf", "17",
            "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(output)]
     with subprocess.Popen(cmd, stdin=subprocess.PIPE) as writer:
         for i, (frame, swimmer_time) in enumerate(zip(frames, swimmer_times)):
-            chars, ink, paper = grid(frame, camera, i / FPS, swimmer_time)
-            scene = paint(chars, ink, atlas(), paper, bloom=.26)
-            writer.stdin.write(cv2.LUT(scene, silver_print).tobytes())
+            scene = render_plate(frame, camera, i, swimmer_time, silver_print)
+            writer.stdin.write(scene.tobytes())
             writer.stdin.write(panel.tobytes())
         writer.stdin.close()
         if writer.wait():
             raise RuntimeError("ffmpeg could not encode the shot")
 
 
-def finish_movie(source, output, frames, school_size):
+def reel_graphics(frames, school_size, *, start=0):
     cuts = panel_timeline(frames)
     catch_frame = next(index for index, section in cuts if section == "catch")
-    for _, section in cuts:
-        source_panel(section)
     timeline = iter(cuts)
     _, section = next(timeline)
     change = next(timeline, None)
-    panel = source_panel(section)
     status = ImageFont.truetype(FONT, STATUS_SIZE)
+    for i in range(start, len(frames)):
+        while change is not None and change[0] <= i:
+            section = change[1]
+            change = next(timeline, None)
+        frame = frames[i]
+        # The HUD counts the active shoal, including fish off-camera.
+        fish = school_size - int(frame["caught"])
+        overlay = header(frame["swim"][0], fish, i - catch_frame, status)
+        yield overlay, source_panel(section)
 
+
+def finish_movie(source, output, frames, school_size):
     filters = (
         f"[0:v]crop=iw:{SCENE_H}:0:0[scene];[1:v]split[upper][lower];"
         f"[upper]crop=iw:{HEADER_H}:0:0,format=yuva420p[header];"
@@ -700,19 +722,25 @@ def finish_movie(source, output, frames, school_size):
               "-c:v", "libx264", "-preset", "fast", "-crf", "16", "-pix_fmt", "yuv420p",
               "-movflags", "+faststart"]
     with subprocess.Popen(writer + [str(output)], stdin=subprocess.PIPE) as dst:
-        for i, frame in enumerate(frames):
-            if change is not None and i == change[0]:
-                panel = source_panel(change[1])
-                change = next(timeline, None)
-            # During the seam there are two shoals in the simulation.
-            # The HUD counts the active shoal, including fish off-camera.
-            fish = school_size - int(frame["caught"])
-            overlay = header(frame["swim"][0], fish, i - catch_frame, status)
+        for overlay, panel in reel_graphics(frames, school_size):
             dst.stdin.write(overlay.tobytes())
             dst.stdin.write(panel)
         dst.stdin.close()
         if dst.wait():
             raise RuntimeError("Could not encode the finished reel")
+
+
+def write_png(frames, camera, swimmer_times, school_size, time, output):
+    # Match the frame selection in the model player.
+    index = min(int(time * FPS + 0.0001), len(frames) - 1)
+    pixels = render_plate(frames[index], camera, index, swimmer_times[index], silver_print_lut())
+    overlay, panel = next(reel_graphics(model_frames(frames, camera), school_size, start=index))
+    image = Image.new("RGB", (WIDTH, FRAME_H))
+    image.paste(Image.fromarray(pixels))
+    image.paste(overlay, (0, 0), overlay)
+    image.paste(Image.frombytes("RGBA", (WIDTH, PANEL_H), panel), (0, SCENE_H))
+    output.parent.mkdir(parents=True, exist_ok=True)
+    image.save(output, format="PNG")
 
 
 def release_loop():
@@ -744,6 +772,9 @@ def main():
     commands = parser.add_subparsers(dest="format")
     terminal = commands.add_parser("terminal", help="Play the scene in an ANSI terminal")
     terminal.add_argument("--duration", type=float, default=LOOP_SECONDS, help="Duration in seconds")
+    png = commands.add_parser("png", help="Export the reel frame at the given time")
+    png.add_argument("time", type=float, help="Time in seconds")
+    png.add_argument("file", type=Path, help="Output PNG path")
     args = parser.parse_args()
 
     if args.format == "terminal":
@@ -751,6 +782,13 @@ def main():
             terminal.error(f"duration must be greater than 0 and at most {LOOP_SECONDS} seconds")
         frames, camera, swimmer_times, _ = release_loop()
         play_scene(frames, camera, swimmer_times, args.duration)
+        return
+
+    if args.format == "png":
+        if not 0 <= args.time < LOOP_SECONDS:
+            png.error(f"time must be at least 0 and less than {LOOP_SECONDS} seconds")
+        frames, camera, swimmer_times, school_size = release_loop()
+        write_png(frames, camera, swimmer_times, school_size, args.time, args.file)
         return
 
     out = args.output.resolve()
