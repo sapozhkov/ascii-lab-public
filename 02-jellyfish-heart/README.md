@@ -6,7 +6,7 @@ Two ASCII jellyfish spiral upward together. Seen from the side, their bells and 
 
 ![Two ASCII jellyfish forming a heart](preview.webp)
 
-The interactive model pairs the silent ASCII scene with geometry sampled from the Python simulation at each of its 600 frames. Use the timeline to compare the swimming geometry with the final pose and see how the camera moves around the pair.
+The interactive model pairs the silent ASCII scene with geometry sampled from the Python simulation at each of its 600 frames. Use the timeline to compare the swimming geometry with the final pose and see how the camera moves around the pair. The model loads the silent crop from `scene.mp4` and shows `model-poster.webp` before playback.
 
 | File | What it does |
 | --- | --- |
@@ -18,10 +18,10 @@ The interactive model pairs the silent ASCII scene with geometry sampled from th
 
 ## Run the renderer
 
-Use Python 3.9 or later and install NumPy and Pillow. For MP4 output, install FFmpeg with H.264 encoding support and make it available on your PATH. Keep the `source/` directory alongside `jellyfish.py`.
+Use Python 3.9 or later. The commands below use the NumPy and Pillow versions tested with Python 3.9. For MP4 output, install FFmpeg with H.264 encoding support and make it available on your PATH. Keep the `source/` directory alongside `jellyfish.py`.
 
 ```sh
-python3 -m pip install numpy Pillow
+python3 -m pip install numpy==2.0.2 Pillow==11.3.0
 python3 jellyfish.py png 17.5 heart.png
 python3 jellyfish.py mp4 heart.mp4
 ```

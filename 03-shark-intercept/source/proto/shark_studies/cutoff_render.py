@@ -535,10 +535,10 @@ def write_model(frames, camera, output):
         data[-1]["swim"] = [round(float(value), 3) for value in
                             (pose.speed, pose.thrust, 2.45*pose.speed**2,
                              pose.tail_speed, np.rad2deg(pose.bank))]
-    template = Path(__file__).with_name("cutoff_view.html").read_text()
-    template = template.replace('src="cutoff.mp4"', 'src="cutoff.mp4" loop')
+    template = Path(__file__).with_name("cutoff_view.html").read_text(encoding="utf-8")
     payload = json.dumps(data, ensure_ascii=False, separators=(',', ':'), default=int)
-    output.write_text(template.replace("__FRAMES__", payload).replace("__FPS__", str(FPS)))
+    page = template.replace("__FRAMES__", payload).replace("__FPS__", str(FPS))
+    output.write_text(page, encoding="utf-8")
     return data
 
 

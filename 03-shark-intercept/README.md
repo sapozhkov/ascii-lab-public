@@ -1,11 +1,17 @@
-# Shark intercept
+# 03 · Shark intercept
+
+[Watch on Instagram](https://www.instagram.com/reels/DgJKEEjIquH/) · [Scene page](https://sapozhkov.github.io/ascii-lab-public/03-shark-intercept/) · [Explore the model](https://sapozhkov.github.io/ascii-lab-public/03-shark-intercept/model.html)
 
 A shark approaches a school of 80 fish. One breaks away. A segmented spine, tail thrust and water drag drive the pursuit. The counter drops on contact at 7.58 seconds. The next school enters before the end of the 20-second loop.
 
-- [Swimming and thrust](source/proto/shark_studies/dive_pose.py)
-- [School, pursuit and contact](source/proto/shark_studies/cutoff_motion.py)
-- [ASCII rendering, readouts and export](source/proto/shark_studies/cutoff_render.py)
-- [Synchronized model](model.html)
+![An ASCII shark approaches a lone fish beside a school](preview.webp)
+
+| File | What it does |
+| --- | --- |
+| [cutoff_render.py](source/proto/shark_studies/cutoff_render.py) | Renders the ASCII scene and exports a silent MP4 and its synchronized model. |
+| [cutoff_motion.py](source/proto/shark_studies/cutoff_motion.py) | Simulates the school, pursuit, and contact. |
+| [dive_pose.py](source/proto/shark_studies/dive_pose.py) | Calculates swimming motion and tail thrust. |
+| [cutoff_view.html](source/proto/shark_studies/cutoff_view.html) | Provides the standalone HTML template used by the renderer. |
 
 ## Run the renderer
 
@@ -17,6 +23,6 @@ python3 -m pip install -r requirements.txt
 python3 -m proto.shark_studies.cutoff_render
 ```
 
-Open `source/output/cutoff.mp4` for the reel or `source/output/model.html` for the matching model and frame scrubber. The reel is 1080 × 1920 at 24 frames per second.
+Open `source/output/cutoff.mp4` for the reel or `source/output/model.html` for the matching model and frame scrubber. The export is 1080 × 1920 at 24 frames per second. The Instagram release adds music.
 
 The swimming model uses a simplified tail reaction, body drag and articulated spine. Its hydrodynamic coefficients were tuned for this scene. See the references in `source/proto/shark_studies/dive_pose.py`.

@@ -13,10 +13,10 @@ The tail drives the fish through the water. The anemone’s tentacles bend and l
 
 ## Run the renderer
 
-Use Python 3.10 or later and install NumPy and Pillow. For MP4 output, install FFmpeg with H.264 encoding support and make it available on your PATH.
+Use Python 3.10 or later. The commands below use the NumPy and Pillow versions tested with Python 3.11. For MP4 output, install FFmpeg with H.264 encoding support and make it available on your PATH.
 
 ```sh
-python3 -m pip install numpy Pillow
+python3 -m pip install numpy==2.0.2 Pillow==11.3.0
 python3 clownfish.py png 3.0 frame.png
 python3 clownfish.py mp4 clownfish.mp4
 ```
