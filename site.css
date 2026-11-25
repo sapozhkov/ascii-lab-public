@@ -63,19 +63,19 @@ img { display: block; height: auto; width: 100%; }
 }
 .source-preview {
   margin: 0;
-  padding: .6rem 0;
+  padding: .65rem 0;
   color: #e5edf4;
-  font-size: clamp(.6875rem, 3.1vw, .8125rem);
-  line-height: 1.7;
+  font-size: clamp(.84375rem, 3.45vw, .9375rem);
+  line-height: 1.6;
   tab-size: 4;
   white-space: normal;
 }
 .source-preview code { display: block; font: inherit; }
-.source-line { display: flex; min-block-size: 1.7em; }
+.source-line { display: flex; min-block-size: 1.6em; }
 .source-line-number {
   flex: none;
-  min-inline-size: calc(4ch + .75rem);
-  padding-inline: .375rem;
+  min-inline-size: calc(3ch + .5rem);
+  padding-inline: .25rem;
   border-inline-end: 1px solid #2c3b4a;
   background: var(--source-gutter);
   color: #93a8bb;
@@ -85,7 +85,7 @@ img { display: block; height: auto; width: 100%; }
 }
 .source-text {
   min-inline-size: 0;
-  padding-inline: .5rem .625rem;
+  padding-inline: .375rem;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
