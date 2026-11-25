@@ -715,13 +715,7 @@ def finish_movie(source, output, frames, school_size):
             raise RuntimeError("Could not encode the finished reel")
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, default=Path("output"),
-                        help="directory for cutoff.mp4 and model.html (default: output)")
-    out = parser.parse_args().output.resolve()
-    out.mkdir(parents=True, exist_ok=True)
-
+def release_loop():
     frames = list(states(seconds=LOOP_SECONDS * 3 // 2, wider_escape=True, evasive_prey=True))
     camera = fixed_camera(list(states()))
     incoming = list(approach(frames[0], LOOP_SECONDS // 2, steady_entry=True))
@@ -729,11 +723,44 @@ def main():
     swimmer_times = [i / FPS if primary is frames[i] else i / FPS - LOOP_SECONDS
                      for i, (primary, _) in enumerate(pairs)]
     joined = [join_shoals(primary, secondary) for primary, secondary in pairs]
+    return joined, camera, swimmer_times, len(frames[0].fish)
+
+
+def play_scene(frames, camera, swimmer_times, duration):
+    from terminal_player import play_terminal
+
+    def frame_at(t):
+        index = round(t * FPS)
+        chars, ink, paper = grid(frames[index], camera, t, swimmer_times[index])
+        return chars, ink / 255, paper / 255
+
+    play_terminal(frame_at, fps=FPS, duration=duration)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=Path("output"),
+                        help="directory for cutoff.mp4 and model.html (default: output)")
+    commands = parser.add_subparsers(dest="format")
+    terminal = commands.add_parser("terminal", help="Play the scene in an ANSI terminal")
+    terminal.add_argument("--duration", type=float, default=LOOP_SECONDS, help="Duration in seconds")
+    args = parser.parse_args()
+
+    if args.format == "terminal":
+        if not 0 < args.duration <= LOOP_SECONDS:
+            terminal.error(f"duration must be greater than 0 and at most {LOOP_SECONDS} seconds")
+        frames, camera, swimmer_times, _ = release_loop()
+        play_scene(frames, camera, swimmer_times, args.duration)
+        return
+
+    out = args.output.resolve()
+    out.mkdir(parents=True, exist_ok=True)
+    frames, camera, swimmer_times, school_size = release_loop()
     with TemporaryDirectory(dir=out) as workdir:
         work = Path(workdir)
-        model = write_model(joined, camera, work / "model.html")
-        render_scene(joined, camera, swimmer_times, work / "scene.mp4")
-        finish_movie(work / "scene.mp4", work / "cutoff.mp4", model, len(frames[0].fish))
+        model = write_model(frames, camera, work / "model.html")
+        render_scene(frames, camera, swimmer_times, work / "scene.mp4")
+        finish_movie(work / "scene.mp4", work / "cutoff.mp4", model, school_size)
         (work / "cutoff.mp4").replace(out / "cutoff.mp4")
         (work / "model.html").replace(out / "model.html")
 

@@ -8,39 +8,48 @@ import time
 import numpy as np
 
 
-def fit_grid(chars, ink, columns, lines):
-    rows, width = chars.shape
+def fit_grid(layers, columns, lines):
+    rows, width = layers[0].shape
     # Leave the last row and column free to avoid wrapping or scrolling.
     scale = min(1, max(1, columns - 1) / width, max(1, lines - 1) / rows)
     if scale == 1:
-        return chars, ink
+        return layers
 
     height, width_on_screen = max(1, int(rows * scale)), max(1, int(width * scale))
     y = ((np.arange(height) + 0.5) * rows / height).astype(int)
     x = ((np.arange(width_on_screen) + 0.5) * width / width_on_screen).astype(int)
     selection = np.ix_(y, x)
-    return chars[selection], ink[selection]
+    return tuple(layer[selection] for layer in layers)
 
 
-def ansi_frame(chars, ink):
+def rgb_rows(colors):
+    return (np.clip(colors, 0, 1) * 255).astype(np.uint8).tolist()
+
+
+def ansi_frame(chars, ink, paper=None):
     """Encode glyph IDs (ASCII minus 32) and RGB colors on a 0–1 scale."""
-    colors = (np.clip(ink, 0, 1) * 255).astype(np.uint8)
+    backgrounds = rgb_rows(paper) if paper is not None else None
     parts = []
-    previous = None
-    for row, (glyphs, rgb) in enumerate(zip(chars.tolist(), colors.tolist())):
+    previous_ink = previous_paper = None
+    for row, (glyphs, rgb) in enumerate(zip(chars.tolist(), rgb_rows(ink))):
         if row:
             parts.append("\x1b[E")
-        for glyph, color in zip(glyphs, rgb):
-            if glyph and color != previous:
+        background = backgrounds[row] if backgrounds is not None else None
+        for column, (glyph, color) in enumerate(zip(glyphs, rgb)):
+            if background is not None and background[column] != previous_paper:
+                previous_paper = background[column]
+                red, green, blue = previous_paper
+                parts.append(f"\x1b[48;2;{red};{green};{blue}m")
+            if glyph and color != previous_ink:
                 red, green, blue = color
                 parts.append(f"\x1b[38;2;{red};{green};{blue}m")
-                previous = color
+                previous_ink = color
             parts.append(chr(glyph + 32))
     return "".join(parts)
 
 
 def play_terminal(frame_at, *, fps, duration):
-    """Play one pass of a callable returning a glyph grid and foreground colors."""
+    """Play glyphs, foreground RGB and optional background RGB from frame_at."""
     if not math.isfinite(duration) or duration <= 0:
         raise SystemExit("Terminal playback duration must be a positive number.")
     output = sys.stdout
@@ -55,14 +64,14 @@ def play_terminal(frame_at, *, fps, duration):
         start = time.monotonic()
         index = 0
         while index / fps < duration:
-            chars, ink = first_frame if index == 0 else frame_at(index / fps)
+            layers = first_frame if index == 0 else frame_at(index / fps)
             size = os.get_terminal_size(output.fileno())
             if size != previous_size:
-                output.write("\x1b[2J")
+                output.write("\x1b[48;2;0;0;0m\x1b[2J")
                 previous_size = size
-            chars, ink = fit_grid(chars, ink, size.columns or chars.shape[1] + 1,
-                                  size.lines or chars.shape[0] + 1)
-            output.write("\x1b[1;1H" + ansi_frame(chars, ink))
+            rows, columns = layers[0].shape
+            visible = fit_grid(layers, size.columns or columns + 1, size.lines or rows + 1)
+            output.write("\x1b[1;1H" + ansi_frame(*visible))
             output.flush()
 
             elapsed = time.monotonic() - start
