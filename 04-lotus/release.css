@@ -1,0 +1,4 @@
+@media (max-width: 340px) {
+  .scene-cards--listing .source-preview { font-size: .6875rem; }
+  .scene-cards--listing .source-text { padding-inline: .25rem; }
+}

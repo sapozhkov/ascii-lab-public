@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lotus · Interactive model · ASCII Lab</title>
+  <link rel="stylesheet" href="../site.css">
+  <style>
+    .lotus-model.shell {
+      --lotus-gutter: clamp(.75rem, 3.5vw, 2.5rem);
+      /* Keep the main pair close to the 277 px width of the source crops. */
+      max-width: calc(575px + var(--lotus-gutter) + var(--lotus-gutter));
+      padding-inline: var(--lotus-gutter);
+    }
+    .lotus-model .intro { max-width: 42rem; margin-bottom: 1.15rem; }
+    .lotus-moments, .lotus-legend { padding: 0; list-style: none; }
+    .lotus-moments {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .4rem;
+      margin: 0 0 clamp(1rem, 3vw, 1.55rem);
+    }
+    .lotus-moments button {
+      width: 100%;
+      height: 100%;
+      padding: .5rem .65rem;
+      border: 1px solid var(--edge);
+      border-radius: .38rem;
+      background: #101923;
+      color: inherit;
+      font: inherit;
+      font-size: .82rem;
+      text-align: start;
+      cursor: pointer;
+    }
+    .lotus-moments button:hover, .lotus-moments [aria-current] {
+      border-color: #5baab5;
+      background: #14232d;
+    }
+    .lotus-moments button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .lotus-moments time { display: block; color: #84dce9; font-variant-numeric: tabular-nums; }
+    .lotus-views {
+      display: grid;
+      grid-template-areas: "ascii camera" "legend legend" "drop drop" "top top";
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(.55rem, 2vw, 1.05rem);
+      align-items: start;
+    }
+    .lotus-views figure {
+      min-width: 0;
+      overflow: hidden;
+      margin: 0;
+      border: 1px solid var(--edge);
+      border-radius: .6rem;
+      background: #0d1621;
+    }
+    .lotus-views figcaption {
+      display: flex;
+      align-items: center;
+      min-height: 2.3rem;
+      padding: .48rem clamp(.42rem, 2vw, .9rem);
+      border-bottom: 1px solid var(--edge);
+      color: #e8edf5;
+      font-size: clamp(.72rem, 2.8vw, .91rem);
+      font-weight: 600;
+      line-height: 1.2;
+    }
+    .lotus-view-window {
+      display: grid;
+      position: relative;
+      overflow: hidden;
+      align-items: center;
+      justify-items: center;
+      aspect-ratio: 277 / 333;
+      background: #0f151e;
+    }
+    .lotus-view-window canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .lotus-ascii { grid-area: ascii; }
+    .lotus-camera { grid-area: camera; }
+    .lotus-camera .lotus-view-window::after {
+      /* Hide the cropped caption baked into the lower left of the source diagram. */
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 59%;
+      height: 1.5%;
+      background: #0f151e;
+      content: "";
+    }
+    .lotus-top, .lotus-drop { justify-self: center; }
+    .lotus-top { grid-area: top; width: min(100%, 297px); }
+    .lotus-drop { grid-area: drop; width: min(100%, 226px); }
+    .lotus-views .lotus-drop { border-color: #32545e; }
+    .lotus-drop figcaption { color: #9de3e8; }
+    .lotus-top .lotus-view-window { aspect-ratio: 295 / 260; }
+    .lotus-drop .lotus-view-window { aspect-ratio: 1; background: #0b121b; }
+    .lotus-drop .lotus-view-window canvas { width: min(100%, 224px); height: auto; }
+    .lotus-ascii video {
+      position: absolute; width: calc(1160 / 277 * 100%); max-width: none;
+      left: calc(-20 / 277 * 100%); top: calc(-80 / 333 * 100%);
+    }
+    .lotus-legend {
+      display: flex;
+      flex-wrap: wrap;
+      grid-area: legend;
+      gap: .3rem 1.15rem;
+      margin: -.06rem 0 .2rem;
+      color: var(--muted);
+      font-size: .78rem;
+    }
+    .lotus-legend li { display: flex; align-items: center; gap: .35rem; }
+    .lotus-legend li::before { width: .5rem; height: .5rem; border-radius: 50%; background: var(--marker); content: ""; }
+    @media (min-width: 39rem) {
+      .lotus-moments { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .lotus-views { grid-template-areas: "ascii camera" "legend legend" "top drop"; }
+      .lotus-top, .lotus-drop { width: 100%; }
+      .lotus-drop .lotus-view-window { aspect-ratio: 295 / 260; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell lotus-model">
+    <a class="back" href="index.html">Back to the release</a>
+    <h1>Lotus model</h1>
+    <p class="intro">Follow a droplet from the lotus petal to the pond. All views share the reel’s 20-second timeline.</p>
+    <a class="model-references-link" href="#scientific-references">Scientific references</a>
+    <section class="model-playback" aria-label="Playback">
+  <div class="model-transport">
+    <button data-model-play type="button">Play</button>
+    <output data-model-time for="model-timeline">0.00 s</output>
+  </div>
+  <input data-model-slider id="model-timeline" type="range" min="0" step="1" value="0" aria-label="Scene timeline">
+  <p data-model-status role="status" hidden></p>
+</section>
+
+    <ul class="lotus-moments" aria-label="Jump to a water event">
+      <li><button type="button" data-seconds="11.383"><time datetime="PT11.38S">11.38 s</time>Petal release</button></li>
+      <li><button type="button" data-seconds="11.90"><time datetime="PT11.90S">11.90 s</time>Leaf contact</button></li>
+      <li><button type="button" data-seconds="13.90"><time datetime="PT13.90S">13.90 s</time>Leaf release</button></li>
+      <li><button type="button" data-seconds="14.65"><time datetime="PT14.65S">14.65 s</time>Pond contact</button></li>
+    </ul>
+    <section class="lotus-views" aria-label="Synchronized views">
+      <figure class="lotus-ascii">
+        <figcaption>ASCII scene</figcaption>
+        <div class="lotus-view-window">
+          <video id="model-video" data-src="model-diagram-overhead.mp4" preload="auto" muted playsinline aria-label="Lotus ASCII animation"></video>
+        </div>
+      </figure>
+      <figure class="lotus-camera">
+        <figcaption>Camera projection</figcaption>
+        <div class="lotus-view-window">
+          <canvas data-left="323" data-top="136" width="278" height="333" role="img" aria-label="Lotus wireframe with the water path and the bumblebee"></canvas>
+        </div>
+      </figure>
+      <ul class="lotus-legend" aria-label="Projection legend">
+        <li style="--marker: #65dceb">Water path</li>
+        <li style="--marker: #f7bf5a">Bumblebee heading</li>
+        <li style="--marker: #87cbf2">Local wind</li>
+      </ul>
+      <figure class="lotus-drop">
+        <figcaption>Droplet close-up</figcaption>
+        <div class="lotus-view-window">
+          <canvas data-left="618" data-top="380" width="186" height="186" role="img" aria-label="Magnified ASCII scene around the droplet"></canvas>
+        </div>
+      </figure>
+      <figure class="lotus-top">
+        <figcaption>Overhead projection</figcaption>
+        <div class="lotus-view-window">
+          <canvas data-left="618" data-top="80" width="295" height="260" role="img" aria-label="Lotus flower and leaves viewed directly from above"></canvas>
+        </div>
+      </figure>
+    </section>
+    <section class="model-references" id="scientific-references" aria-labelledby="references-title">
+  <h2 id="references-title">Scientific references</h2>
+<article class="research-note">
+    <h3>Lotus and its visitors</h3>
+    <ul class="research-sources">
+      <li>
+        <p>Field observations of insects visiting sacred lotus flowers helped check which visitors were plausible for the scene.</p>
+        <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC2749538/" target="_blank" rel="noopener">Li &amp; Huang (2009) · Effective pollinators of Asian sacred lotus (<i>Nelumbo nucifera</i>): contemporary pollinators may not reflect the historical pollination syndrome</a>
+      </li>
+      <li>
+        <p>Records of bumblebee distribution helped check whether bumblebees and sacred lotus occur in the same regions.</p>
+        <a href="https://pubmed.ncbi.nlm.nih.gov/25081273/" target="_blank" rel="noopener">An et al. (2014) · The bumblebees of North China (Apidae, <i>Bombus</i> Latreille)</a>
+      </li>
+      <li>
+        <p>The species profile helped check the round leaves, the position of the stalk at their centre and how the leaves rise above the pond.</p>
+        <a href="https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:605422-1/general-information" target="_blank" rel="noopener">Kew Science · <i>Nelumbo nucifera</i> · Plants of the World Online</a>
+      </li>
+    </ul>
+  </article>
+  <article class="research-note">
+    <h3>Motion reference</h3>
+    <ul class="research-sources">
+      <li>
+        <p>The petal opening was fitted to visible petal tips in frames from the demo.</p>
+        <a href="https://www.youtube.com/watch?v=Hhz1lhoViNk&amp;t=6s" target="_blank" rel="noopener">Kail Designs · Turn Any Image or Video into ASCII Art, Pixel Art &amp; 100+ Styles - Ascii Magic (6 s)</a>
+      </li>
+    </ul>
+    <p class="parameters">The plant uses elastic bending, the drop uses gravity and adhesion, and the bumblebee uses thrust and drag. The coefficients were tuned by reviewing scene studies.</p>
+  </article>
+</section>
+  </main>
+  <script>
+  function createModelPlayer({ fps, frameCount, draw, video }) {
+  const play = document.querySelector('[data-model-play]');
+  const slider = document.querySelector('[data-model-slider]');
+  const time = document.querySelector('[data-model-time]');
+  const status = document.querySelector('[data-model-status]');
+  const duration = frameCount / fps;
+  const clampFrame = frame => Math.max(0, Math.min(frameCount - 1, frame));
+  const frameAt = seconds => Math.floor(seconds * fps + 0.0001);
+  slider.max = frameCount - 1;
+
+  let seconds = 0;
+  let frame = 0;
+  let animation = null;
+
+  function show(nextSeconds, nextFrame) {
+    seconds = nextSeconds;
+    frame = nextFrame;
+    slider.value = String(frame);
+    time.textContent = seconds.toFixed(2) + ' s';
+    slider.setAttribute('aria-valuetext', seconds.toFixed(2) + ' seconds');
+    draw(seconds, frame);
+  }
+
+  function showVideoFrame(nextFrame) {
+    nextFrame = clampFrame(nextFrame);
+    if (nextFrame !== frame) show(nextFrame / fps, nextFrame);
+  }
+
+  function stopAnimation() {
+    if (animation !== null) cancelAnimationFrame(animation);
+    animation = null;
+    play.textContent = 'Play';
+  }
+
+  function seekVideo() {
+    // Seek just inside the frame, away from the boundary between two frames.
+    if (video.readyState >= 1) video.currentTime = (frame + 0.15) / fps;
+  }
+
+  function seek(nextFrame) {
+    nextFrame = clampFrame(Math.round(nextFrame));
+    if (video) video.pause();
+    else stopAnimation();
+    show(nextFrame / fps, nextFrame);
+    if (video) seekVideo();
+  }
+
+  function report(message) {
+    status.textContent = message;
+    status.hidden = false;
+  }
+
+  function bindVideo() {
+    video.loop = true;
+    const ready = () => {
+      play.disabled = false;
+      if (frame !== 0) seekVideo();
+    };
+    const failed = () => {
+      stopAnimation();
+      play.disabled = true;
+      report('The ASCII clip could not load. You can still scrub the model.');
+    };
+    play.disabled = true;
+    video.addEventListener('loadedmetadata', ready);
+    video.addEventListener('error', failed);
+    video.addEventListener('play', () => { play.textContent = 'Pause'; });
+    video.addEventListener('pause', stopAnimation);
+    play.addEventListener('click', async () => {
+      if (play.disabled) return;
+      if (!video.paused) {
+        video.pause();
+        return;
+      }
+      try {
+        await video.play();
+        status.hidden = true;
+      } catch {
+        report('Playback could not start. Try Play again or use the timeline.');
+      }
+    });
+
+    if (video.requestVideoFrameCallback) {
+      const present = (_now, { mediaTime }) => {
+        if (!video.seeking && !video.paused) showVideoFrame(Math.round(mediaTime * fps));
+        video.requestVideoFrameCallback(present);
+      };
+      video.requestVideoFrameCallback(present);
+    } else {
+      const tick = () => {
+        if (!video.seeking) showVideoFrame(frameAt(video.currentTime));
+        animation = requestAnimationFrame(tick);
+      };
+      video.addEventListener('play', () => { animation = requestAnimationFrame(tick); });
+    }
+    if (video.readyState >= 1) ready();
+    if (video.error) failed();
+  }
+
+  function bindSimulation() {
+    let started;
+    let origin;
+    const tick = now => {
+      const elapsed = (origin + Math.max(0, now - started) / 1000) % duration;
+      show(elapsed, clampFrame(frameAt(elapsed)));
+      animation = requestAnimationFrame(tick);
+    };
+    play.addEventListener('click', () => {
+      if (animation !== null) {
+        stopAnimation();
+        return;
+      }
+      origin = seconds;
+      started = performance.now();
+      play.textContent = 'Pause';
+      animation = requestAnimationFrame(tick);
+    });
+  }
+
+  slider.addEventListener('input', () => seek(Number(slider.value)));
+  show(0, 0);
+  if (video) bindVideo();
+  else bindSimulation();
+
+  return { seek, redraw: () => draw(seconds, frame) };
+}
+
+  const fps = 15;
+  const video = document.querySelector('#model-video');
+  const moments = Array.from(document.querySelectorAll('.lotus-moments button'));
+  const panels = Array.from(document.querySelectorAll('.lotus-views canvas'), canvas => ({
+    context: canvas.getContext('2d'),
+    left: Number(canvas.dataset.left),
+    top: Number(canvas.dataset.top),
+    width: canvas.width,
+    height: canvas.height,
+  }));
+
+  function drawProjections() {
+    if (video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA || video.seeking) return;
+    for (const { context, left, top, width, height } of panels) {
+      context.drawImage(video, left, top, width, height, 0, 0, width, height);
+    }
+  }
+
+  function draw(seconds) {
+    const current = moments.findLast(button => seconds >= Number(button.dataset.seconds));
+    for (const button of moments) {
+      if (button === current) button.setAttribute('aria-current', 'step');
+      else button.removeAttribute('aria-current');
+    }
+    if (!video.paused) drawProjections();
+  }
+
+  async function loadVideo() {
+    const source = video.dataset.src;
+    if (location.protocol !== 'file:') {
+      try {
+        // A plain local server may return the whole file for a byte range.
+        // A Blob lets the browser seek that same file without range support.
+        const response = await fetch(source, { headers: { Range: 'bytes=0-0' } });
+        if (response.status === 200) {
+          video.src = URL.createObjectURL(await response.blob());
+          return;
+        }
+      } catch {
+        // Let the media element report any load failure.
+      }
+    }
+    video.src = source;
+  }
+
+  const player = createModelPlayer({ fps, frameCount: 300, video, draw });
+  video.addEventListener('loadeddata', drawProjections);
+  video.addEventListener('seeked', drawProjections);
+  video.addEventListener('error', () => {
+    document.querySelector('[data-model-status]').textContent = 'The model video could not load.';
+    document.querySelector('[data-model-slider]').disabled = true;
+    for (const button of moments) button.disabled = true;
+  });
+  for (const button of moments) {
+    button.addEventListener('click', () => player.seek(Math.ceil(Number(button.dataset.seconds) * fps)));
+  }
+  loadVideo();
+  </script>
+</body>
+</html>
