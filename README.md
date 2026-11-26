@@ -8,5 +8,5 @@ Each reel's README shows how to play the animation in a terminal, export a PNG f
 
 | 01 · Clownfish & anemone | 02 · Jellyfish heart | 03 · Shark intercept | 04 · Lotus |
 | --- | --- | --- | --- |
-| [![Clownfish preview](01-clownfish/preview.webp)](01-clownfish/) | [![Jellyfish preview](02-jellyfish-heart/preview.webp)](02-jellyfish-heart/) | [![Shark preview](03-shark-intercept/preview.webp)](03-shark-intercept/) | [![Lotus preview](04-lotus/preview.webp)](04-lotus/) |
+| <a href="01-clownfish/"><img src="01-clownfish/gallery.webp" width="144" height="144" alt="Clownfish preview"></a> | <a href="02-jellyfish-heart/"><img src="02-jellyfish-heart/gallery.webp" width="144" height="144" alt="Jellyfish preview"></a> | <a href="03-shark-intercept/"><img src="03-shark-intercept/gallery.webp" width="144" height="144" alt="Shark preview"></a> | <a href="04-lotus/"><img src="04-lotus/gallery.webp" width="144" height="144" alt="Lotus preview"></a> |
 | [Code and model](01-clownfish/) | [Code and model](02-jellyfish-heart/) | [Code and model](03-shark-intercept/) | [Code and model](04-lotus/) |
