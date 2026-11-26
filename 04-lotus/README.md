@@ -1,6 +1,6 @@
 # 04 · Lotus
 
-[Scene page](https://sapozhkov.github.io/ascii-lab-public/04-lotus/) · [Explore the model](https://sapozhkov.github.io/ascii-lab-public/04-lotus/model.html)
+[Watch on Instagram](https://www.instagram.com/p/DgN6AQ9Nl6W/) · [Scene page](https://sapozhkov.github.io/ascii-lab-public/04-lotus/) · [Explore the model](https://sapozhkov.github.io/ascii-lab-public/04-lotus/model.html)
 
 A purple lotus opens after rain. A bumblebee lands, and a drop rolls from a leaf into the pond. A silent, 20-second ASCII loop.
 
