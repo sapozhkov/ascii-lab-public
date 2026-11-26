@@ -6,11 +6,9 @@ Source code and interactive models for the procedural ASCII reels at [@ascii.lab
 
 Each reel's README shows how to play the animation in a terminal, export a PNG frame at a chosen time, and render an MP4.
 
-<p>
-  <a href="01-clownfish/"><img src="01-clownfish/gallery.webp" width="144" height="144" alt="Clownfish preview"></a>
-  <a href="02-jellyfish-heart/"><img src="02-jellyfish-heart/gallery.webp" width="144" height="144" alt="Jellyfish preview"></a>
-  <a href="03-shark-intercept/"><img src="03-shark-intercept/gallery.webp" width="144" height="144" alt="Shark preview"></a>
-  <a href="04-lotus/"><img src="04-lotus/gallery.webp" width="144" height="144" alt="Lotus preview"></a>
-</p>
+| 01 | 02 | 03 | 04 |
+| :---: | :---: | :---: | :---: |
+| <a href="01-clownfish/"><img src="01-clownfish/gallery.webp" width="144" height="144" alt="Clownfish preview"></a> | <a href="02-jellyfish-heart/"><img src="02-jellyfish-heart/gallery.webp" width="144" height="144" alt="Jellyfish preview"></a> | <a href="03-shark-intercept/"><img src="03-shark-intercept/gallery.webp" width="144" height="144" alt="Shark preview"></a> | <a href="04-lotus/"><img src="04-lotus/gallery.webp" width="144" height="144" alt="Lotus preview"></a> |
+| [Code and model](01-clownfish/) | [Code and model](02-jellyfish-heart/) | [Code and model](03-shark-intercept/) | [Code and model](04-lotus/) |
 
 [01 · Clownfish & anemone](01-clownfish/) · [02 · Jellyfish heart](02-jellyfish-heart/) · [03 · Shark intercept](03-shark-intercept/) · [04 · Lotus](04-lotus/)
